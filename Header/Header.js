@@ -1,13 +1,29 @@
-import React from 'react'
-import './Header.css';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 
-function Header() {
-    return (
-        <div className="Header">
-            <h1>CÉREALIS</h1>
-        </div>
-    )
-}
+const App = () => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.textStyle}>
+        CÉRÉALIS
+      </Text>
+    </View>
+  );
+};
 
-export default Header
+const styles = StyleSheet.create({
+  container: {
+    flex: 0.15,
+    justifyContent: 'center',
+    backgroundColor: '#f6cb46'
+  },
+  textStyle: {
+    textAlign: 'center',
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 24
+  }
+});
+
+export default App;
