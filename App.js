@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera'; 
 import Footer from './share';
 
@@ -17,7 +17,13 @@ export default function App() {
     if (camera) {
       const data = await camera.takePictureAsync(null);
       setImage(data.uri);
-      console.log(data.uri);
+      return data.uri
+    }
+  }
+
+  const retour = async () => {
+    if (!camera) {
+      setImage(null);
     }
   }
 
@@ -42,8 +48,15 @@ export default function App() {
         ratio={'1:1'}
       /> : null}
       {image ? <Image source={{ uri: image }} style={{ flex: 1 }} /> : null}
-      {!image ? <Button title="Capture" onPress={() => takePicture()} /> : null}
+      {!image ? <View style={styles.buttonRond}>
+        <View style={styles.buttonRond2}>
+          <TouchableOpacity onPress={() => takePicture()} style={styles.buttoncapture} />
+        </View>
+      </View> : null}
       {image ? <Footer /> : null}
+      {image ? <TouchableOpacity style={styles.retour} onPress={() => { retour() }}>
+        <Text style={styles.text}> Retour </Text>
+      </TouchableOpacity> : null}
     </View>
   );
 }
@@ -76,5 +89,39 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 24
+  },
+  buttonRond: {
+    position: 'absolute',
+    bottom: 0,
+    flexDirection: 'row',
+    flex: 1,
+    width: '100%',
+    padding: 20,
+    justifyContent: 'space-between'
+  },
+  buttonRond2: {
+    alignSelf: 'center',
+    flex: 1,
+    alignItems: 'center'
+  },
+  buttoncapture: {
+    width: 70,
+    height: 70,
+    bottom: 0,
+    borderRadius: 50,
+    backgroundColor: 'white',
+    borderWidth: 2,
+    borderColor: 'grey'
+  },
+  retour: {
+    position: 'absolute',
+    top: 100,
+    right: 0,
+    backgroundColor: 'grey'
+  },
+  text: {
+    fontSize: 18,
+    color: 'white',
+    fontWeight: 'bold'
   }
 });
