@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, Image } from 'react-native';
 import { Camera } from 'expo-camera'; 
-import ShareExample from './share';
+import Footer from './share';
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -35,15 +35,15 @@ export default function App() {
           CÉRÉALIS
         </Text>
       </View>
-      { !image && <Camera
+      {!image ? <Camera
         ref={ref => setCamera(ref)}
         style={styles.camera}
         type={type}
-        ratio={'1:1'} 
-        />}
+        ratio={'1:1'}
+      /> : null}
       {image ? <Image source={{ uri: image }} style={{ flex: 1 }} /> : null}
       {!image ? <Button title="Capture" onPress={() => takePicture()} /> : null}
-      {image ? <ShareExample/> : null}
+      {image ? <Footer /> : null}
     </View>
   );
 }
