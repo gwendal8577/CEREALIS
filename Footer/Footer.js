@@ -7,20 +7,38 @@ import {
   Pressable,
   View,
   TextInput,
-  Image
+  Image,
+  TouchableHighlight,
+  Share,
+  Button,
+  Linking
 } from 'react-native';
 
+import { useWindowDimensions  } from 'react-native';
+import RenderHTML from 'react-native-render-html';
+
 //import { Modal } from 'react-native-web';
-import './Footer.css';
 
 import logoFB from '../assets/logoFB.png';
 import logoTwitter from '../assets/logoTwitter.png';
 import logoInsta from '../assets/logoInsta.jpg';
 
+
 function Footer() {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [text, onChangeText] = React.useState(null);
+
+    const twitter = {
+      html: '<a href="https://twitter.com/intent/tweet?hashtags=cerealis%2Ccoloring%2CAR&ref_src=twsrc%5Etfw" class="twitter-hashtag-button" data-show-count="false"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" /></a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
+    };
+    /*const facebook = {
+      html: '<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugin%2F&amp;src=sdkpreparse" target="_blank">Facebook</a>'
+    }*/
+    /*const instagram = {
+      html: '<a href="https://www.instagram.com/">Instagram</a><script async src="//www.instagram.com/embed.js"></script>'
+    }*/
+    const { width } = useWindowDimensions();
 
     return (
         <View style={styles.centeredView}>
@@ -47,13 +65,12 @@ function Footer() {
             />
             <Pressable
               style={[styles.button, styles.buttonValidate]}>
-              <Text style={styles.textStyle}>Validate</Text>
+              <Text style={styles.textStyleV}>Validate</Text>
             </Pressable>
-            <View style={styles.images}>
-                <Image source={logoFB} style={{width: 20, height: 20}}  />
-                <Image source={logoTwitter} style={{width: 20, height: 20}}  />
-                <Image source={logoInsta} style={{width: 20, height: 20}}  />
-            </View>
+            <RenderHTML
+              contentWidth={width}
+              source={twitter}
+            />
             <Pressable
               style={[styles.button, styles.buttonRetour]}
               onPress={() => setModalVisible(!modalVisible)}>
@@ -71,22 +88,16 @@ function Footer() {
 }
 
 
-
 const styles = StyleSheet.create({
     centeredView: {
       alignItems: 'center',
     },
     modalView: {
-      margin: 10,
+      margin: 130,
       backgroundColor: 'white',
       borderRadius: 20,
-      padding: 30,
-      alignItems: 'center',
+      padding: 20,
       shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
       shadowOpacity: 0.25,
       shadowRadius: 4,
       elevation: 5,
@@ -103,20 +114,31 @@ const styles = StyleSheet.create({
       backgroundColor: '#2196F3',
       padding: 5,
       margin: 2,
+      marginTop: 10
     },
     buttonValidate: {
       backgroundColor: '#5FE180',
       width: 150,
       height: 30,
+      marginBottom: 10
     },
     textStyle: {
       color: 'white',
       fontWeight: 'bold',
       textAlign: 'center',
+      fontSize: 20
+    },
+    textStyleV: {
+      color: 'white',
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginTop: 3,
+      fontSize: 20
     },
     modalText: {
       marginBottom: 15,
       textAlign: 'center',
+      fontSize: 22
     },
     input: {
       height: 40,
