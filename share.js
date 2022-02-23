@@ -63,9 +63,9 @@ function Footer() {
               contentWidth={width}
               source={twitter}
             />
-            <Pressable style={[styles.button, styles.buttonRetour]}
+            <Pressable style={[styles.button, styles.buttonBack]}
               onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Retour</Text>
+              <Text style={styles.textStyle}>Back</Text>
             </Pressable>
           </View>
         </View>
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#5398D7',
     padding: 20,
   },
-  buttonRetour: {
+  buttonBack: {
     backgroundColor: '#2196F3',
     padding: 5,
     margin: 2,

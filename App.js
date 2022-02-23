@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-native';
-import { Camera } from 'expo-camera'; 
+import { Camera } from 'expo-camera';
 import Footer from './share';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -17,14 +18,20 @@ export default function App() {
     if (camera) {
       const data = await camera.takePictureAsync(null);
       setImage(data.uri);
+      console.log(data.uri);
+      await AsyncStorage.setItem('image', data.uri)
       return data.uri
     }
   }
 
-  const retour = async () => {
+  const back = async () => {
     if (!camera) {
       setImage(null);
     }
+  }
+
+  const onShare = async () => {
+    console.log(await takePicture())
   }
 
   if (hasPermission === null) {
@@ -54,9 +61,13 @@ export default function App() {
         </View>
       </View> : null}
       {image ? <Footer /> : null}
-      {image ? <TouchableOpacity style={styles.retour} onPress={() => { retour() }}>
-        <Text style={styles.text}> Retour </Text>
+      {image ? <TouchableOpacity style={styles.back} onPress={() => { back() }}>
+        <Text style={styles.text}> Back </Text>
       </TouchableOpacity> : null}
+
+      <View style={{ marginTop: 50 }}>
+        <Button onPress={() => onShare()} title="Share" />
+      </View>
     </View>
   );
 }
@@ -113,7 +124,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'grey'
   },
-  retour: {
+  back: {
     position: 'absolute',
     top: 100,
     right: 0,
