@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, TouchableOpacity, Share } from 'react-native';
 import { Camera } from 'expo-camera';
 import Footer from './share';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -20,7 +20,6 @@ export default function App() {
       setImage(data.uri);
       console.log(data.uri);
       await AsyncStorage.setItem('image', data.uri)
-      return data.uri
     }
   }
 
@@ -31,7 +30,13 @@ export default function App() {
   }
 
   const onShare = async () => {
-    console.log(await takePicture())
+    try {
+      await Share.share({
+        message: 'cature',
+      });
+    } catch (error) {
+      alert(error.message);
+    }
   }
 
   if (hasPermission === null) {
