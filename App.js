@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, Image, TouchableOpacity, Share } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
 import Footer from './share';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -26,16 +26,6 @@ export default function App() {
   const back = async () => {
     if (!camera) {
       setImage(null);
-    }
-  }
-
-  const onShare = async () => {
-    try {
-      await Share.share({
-        message: 'cature',
-      });
-    } catch (error) {
-      alert(error.message);
     }
   }
 
@@ -69,10 +59,6 @@ export default function App() {
       {image ? <TouchableOpacity style={styles.back} onPress={() => { back() }}>
         <Text style={styles.text}> Back </Text>
       </TouchableOpacity> : null}
-
-      <View style={{ marginTop: 50 }}>
-        <Button onPress={() => onShare()} title="Share" />
-      </View>
     </View>
   );
 }

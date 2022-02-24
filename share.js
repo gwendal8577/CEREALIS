@@ -7,31 +7,36 @@ import {
   Pressable,
   View,
   TextInput,
-  Button
+  Button,
+  Image,
+  TouchableOpacity
 } from 'react-native';
 
 import { useWindowDimensions } from 'react-native';
-import RenderHTML from 'react-native-render-html';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Sharing from 'expo-sharing';
 
-/* import logoFB from './assets';
-import logoTwitter from '../assets/logoTwitter.png';
-import logoInsta from '../assets/logoInsta.jpg'; */
 
 function Footer() {
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [text, onChangeText] = React.useState(null);
+  const [text] = React.useState(null);
 
   const twitter = {
     html: '<a href="https://twitter.com/intent/tweet?hashtags=cerealis%2Ccoloring%2CAR&ref_src=twsrc%5Etfw" class="twitter-hashtag-button" data-show-count="false"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" /></a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
   };
-  /*const facebook = {
-    html: '<a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugin%2F&amp;src=sdkpreparse" target="_blank">Facebook</a>'
-  }*/
-  /*const instagram = {
-    html: '<a href="https://www.instagram.com/">Instagram</a><script async src="//www.instagram.com/embed.js"></script>'
-  }*/
+
   const { width } = useWindowDimensions();
+
+  const onShare = async () => {
+    try {
+      let image = await AsyncStorage.getItem('image');
+      Sharing.isAvailableAsync();
+      await Sharing.shareAsync(image)
+    } catch (error) {
+      alert(error.message);
+    }
+  }
 
   return (
     <View style={styles.centeredView}>
@@ -59,10 +64,11 @@ function Footer() {
             <Pressable style={[styles.buttonValidate]}>
               <Text style={styles.textStyleV}>Valider</Text>
             </Pressable>
-            <RenderHTML
-              contentWidth={width}
-              source={twitter}
-            />
+            <TouchableOpacity style={[styles.buttonBack, styles.buttonGPlusStyle]} activeOpacity={0.5}>
+              <Image source={{ uri: 'https://icon-library.com/images/social-network-icon/social-network-icon-23.jpg' }}
+                style={styles.buttonImageIconStyle} />
+              <Text style={styles.textStyle} onPress={() => onShare()}>Share</Text>
+            </TouchableOpacity>
             <Pressable style={[styles.button, styles.buttonBack]}
               onPress={() => setModalVisible(!modalVisible)}>
               <Text style={styles.textStyle}>Back</Text>
@@ -108,12 +114,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#2196F3',
     padding: 5,
     margin: 2,
-    marginTop: 10
+    marginTop: 10,
+    width: 150,
+    height: 40,
   },
   buttonValidate: {
     backgroundColor: '#5FE180',
-    width: 150,
-    height: 30,
     marginBottom: 10,
     justifyContent: 'center',
     alignItems: 'center'
@@ -132,15 +138,31 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   modalText: {
-    marginBottom: 15,
     textAlign: 'center',
     fontSize: 22
   },
   input: {
     height: 40,
-    margin: 12,
+    marginBottom: 10,
     borderWidth: 1,
     padding: 10,
+  },
+  buttonImageIconStyle: {
+    padding: 10,
+    margin: 5,
+    height: 25,
+    width: 25,
+    resizeMode: 'stretch',
+    color: 'white'
+  },
+  buttonGPlusStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 0.5,
+    borderColor: '#fff',
+    height: 40,
+    borderRadius: 5,
+    margin: 5,
   },
 });
 
