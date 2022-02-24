@@ -77,7 +77,7 @@ function Footer() {
         </View>
       </Modal>
       <View>
-        <Button style={[styles.buttonShare]} onPress={() => setModalVisible(true)} title="Partager" />
+        <Button style={[styles.buttonShare]} onPress={() => setModalVisible(true)} title="Share" />
       </View>
     </View>
   )
