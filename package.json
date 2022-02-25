@@ -21,7 +21,8 @@
     "react-native-render-html": "^6.3.4",
     "react-native-share": "^7.3.6",
     "react-native-social-share": "^1.6.5",
-    "react-native-web": "0.17.1"
+    "react-native-web": "0.17.1",
+    "tough-cookie": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

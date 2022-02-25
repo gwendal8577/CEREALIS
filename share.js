@@ -12,6 +12,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
+import tough from 'tough-cookie'
 import { useWindowDimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Sharing from 'expo-sharing';
@@ -54,14 +55,17 @@ function Footer() {
             <TextInput
               style={styles.input}
               value={text}
+              name={'Name'}
               placeholder={'First Name'}
             />
             <TextInput
               style={styles.input}
               value={text}
+              name={'Email'}
               placeholder={'Email Adress'}
             />
-            <Pressable style={[styles.buttonValidate]}>
+            <Pressable style={[styles.buttonValidate]}
+              onPress={() => registrateProspect()}>
               <Text style={styles.textStyleV}>Valider</Text>
             </Pressable>
             <TouchableOpacity style={[styles.buttonBack, styles.buttonGPlusStyle]} activeOpacity={0.5}>
@@ -81,6 +85,47 @@ function Footer() {
       </View>
     </View>
   )
+}
+function registrateProspect(){
+  var token 
+  var myUrl = 'http://192.168.1.40:8087/axelor-erp/callback';
+  var myHeader = new Headers({
+    'Authorization': 'basic '+'admin:admin',
+    'Content-Type':'application/json'
+  });
+  var myBody = JSON.stringify({'username':'admin','password':'admin'});
+  fetch(myUrl,{
+    method: 'POST',
+    headers: myHeader,
+    body: myBody
+  }).then(Response => {
+    createProspect()
+  })
+}
+
+function createProspect(){
+  var cookiejar = new tough.CookieJar
+  cookiejar.setCookie('X-CSRF-Token=1c6b3438-bfeb-4f3b-9b49-bdab7a81b5e8','192.168.1.40:8087/axelor-erp',function(err,cookies) {
+  });
+  cookiejar.setCookie('JSESSIONID=B7D06FF36CFBEFBD4665F7F6FF43F437','192.168.1.40:8087/axelor-erp',function(err,cookies) {
+  });
+  var mail = document.getElementsByName('Email');
+  var name = document.getElementsByName('Name');
+  var myUrl = 'http://localhost:8087/axelor-erp/ws/rest/com.axelor.apps.base.db.Partner';
+  var myHeader = new Headers({
+    'Authorization': 'basic '+'admin:admin',
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  });
+  var myBody = JSON.stringify({'data':{'invoicesCopySelect':1,'isCarrier':false,'chargeBackPurchaseSelect':0,'isEmployee':false,'groupProductsOnPrintings':false,'factorizedCustomer':false,'supplierArrivalProductQty':'0','chargeBackPurchase':'100','isIspmRequired':false,'isProspect':true,'saleTurnover':0,'supplierQualityRatingSelect':'0','isSupplier':false,'isNeedingConformityCertificate':false,'partnerTypeSelect':2,'titleSelect':0,'payerQuality':'0','supplierQualityRating':'0','isSubcontractor':false,'nbrEmployees':0,'isInternal':false,'isContact':false,'paymentDelay':'0','isFactor':false,'deliveryDelay':0,'isCustomer':false,'currency':null,'language':null,'invoiceSendingFormatSelect':'emailpaper','team':null,'user':{'code':'admin','fullName':'Administrator','id':1},'companySet':null,'outPaymentMode':null,'inPaymentMode':null,'paymentCondition':null,'name':name,'simpleFullName':name,'fullName':name,'emailAddress':{'address':mail}}});
+
+  fetch(myUrl,{
+    method: 'PUT',
+    headers: myHeader,
+    body: myBody
+   })
+    .then(Response => {
+    })
 }
 
 const styles = StyleSheet.create({
