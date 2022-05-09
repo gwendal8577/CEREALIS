@@ -25,7 +25,11 @@
     "tough-cookie": "^4.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.15.0",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-native": "^4.0.0"
   },
   "private": true
 }
