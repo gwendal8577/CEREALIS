@@ -14,6 +14,8 @@ export default function App() {
       setHasPermission(status === 'granted');
     })();
   }, []);
+
+  // sert à prendre une photo
   const takePicture = async () => {
     if (camera) {
       const data = await camera.takePictureAsync(null);
