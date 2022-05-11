@@ -2,15 +2,14 @@ name: Lint
 
 #on: pull_request
 on: [push]
+
 jobs:
-  eslint:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-        with:
-          fetch-depth: 1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 16
-      - run: npm install eslint-plugin-react eslint-plugin-react-native babel-eslint
-      - run: eslint ../App.js
+    - uses: actions/checkout@v2
+    - name: Install modules
+      run: yarn
+    - name: Run ESLint
+      run: eslint ../App.js
+      
