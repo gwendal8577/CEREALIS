@@ -10,5 +10,4 @@ jobs:
     - name: Install modules
       run: yarn
     - name: Run ESLint
-      run: eslint ../App.js
-      
+      run: yarn run eslint ../App.js
