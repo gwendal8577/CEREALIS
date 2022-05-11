@@ -23,6 +23,9 @@ function Footer() {
   const [modalVisible, setModalVisible] = useState(false);
   const [text] = React.useState(null);
 
+  var name = '';
+  var mail = '';
+
   const twitter = {
     html: '<a href="https://twitter.com/intent/tweet?hashtags=cerealis%2Ccoloring%2CAR&ref_src=twsrc%5Etfw" class="twitter-hashtag-button" data-show-count="false"><img src="http://twitter-badges.s3.amazonaws.com/t_logo-a.png" /></a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>'
   };
@@ -57,15 +60,17 @@ function Footer() {
               value={text}
               name={'Name'}
               placeholder={'First Name'}
+              onChangeText={(text) => name = text}
             />
             <TextInput
               style={styles.input}
               value={text}
               name={'Email'}
               placeholder={'Email Adress'}
+              onChangeText={(text) => mail = text}
             />
             <Pressable style={[styles.buttonValidate]}
-              onPress={() => registrateProspect()}>
+              onPress={()=> {registrateProspect(name,mail);setModalVisible(!modalVisible);}}>
               <Text style={styles.textStyleV}>Valider</Text>
             </Pressable>
             <TouchableOpacity style={[styles.buttonBack, styles.buttonGPlusStyle]} activeOpacity={0.5}>
@@ -86,46 +91,32 @@ function Footer() {
     </View>
   )
 }
-function registrateProspect(){
+
+function registrateProspect(name,mail){
   var token 
-  var myUrl = 'http://192.168.1.40:8087/axelor-erp/callback';
+  var myUrl = 'http://api.scrapestack.com/scrape?access_key=c9b0848b308efec47d76f40c3d7b297e&url=https://api.hubapi.com/contacts/v1/contact/';
   var myHeader = new Headers({
-    'Authorization': 'basic '+'admin:admin',
-    'Content-Type':'application/json'
+    'Authorization': 'Bearer pat-eu1-d148f997-e2dc-499e-a414-790662e47c15',
+    'Content-Type': 'application/json'
   });
-  var myBody = JSON.stringify({'username':'admin','password':'admin'});
+  var myBody = JSON.stringify({
+    "properties": [
+      {
+        "property": "email",
+        "value": mail
+      },
+      {
+        "property": "firstname",
+        "value": name
+      }
+    ]
+  });
   fetch(myUrl,{
     method: 'POST',
     headers: myHeader,
     body: myBody
   }).then(Response => {
-    createProspect()
   })
-}
-
-function createProspect(){
-  var cookiejar = new tough.CookieJar
-  cookiejar.setCookie('X-CSRF-Token=1c6b3438-bfeb-4f3b-9b49-bdab7a81b5e8','192.168.1.40:8087/axelor-erp',function(err,cookies) {
-  });
-  cookiejar.setCookie('JSESSIONID=B7D06FF36CFBEFBD4665F7F6FF43F437','192.168.1.40:8087/axelor-erp',function(err,cookies) {
-  });
-  var mail = document.getElementsByName('Email');
-  var name = document.getElementsByName('Name');
-  var myUrl = 'http://localhost:8087/axelor-erp/ws/rest/com.axelor.apps.base.db.Partner';
-  var myHeader = new Headers({
-    'Authorization': 'basic '+'admin:admin',
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  });
-  var myBody = JSON.stringify({'data':{'invoicesCopySelect':1,'isCarrier':false,'chargeBackPurchaseSelect':0,'isEmployee':false,'groupProductsOnPrintings':false,'factorizedCustomer':false,'supplierArrivalProductQty':'0','chargeBackPurchase':'100','isIspmRequired':false,'isProspect':true,'saleTurnover':0,'supplierQualityRatingSelect':'0','isSupplier':false,'isNeedingConformityCertificate':false,'partnerTypeSelect':2,'titleSelect':0,'payerQuality':'0','supplierQualityRating':'0','isSubcontractor':false,'nbrEmployees':0,'isInternal':false,'isContact':false,'paymentDelay':'0','isFactor':false,'deliveryDelay':0,'isCustomer':false,'currency':null,'language':null,'invoiceSendingFormatSelect':'emailpaper','team':null,'user':{'code':'admin','fullName':'Administrator','id':1},'companySet':null,'outPaymentMode':null,'inPaymentMode':null,'paymentCondition':null,'name':name,'simpleFullName':name,'fullName':name,'emailAddress':{'address':mail}}});
-
-  fetch(myUrl,{
-    method: 'PUT',
-    headers: myHeader,
-    body: myBody
-   })
-    .then(Response => {
-    })
 }
 
 const styles = StyleSheet.create({
