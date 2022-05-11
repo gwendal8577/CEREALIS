@@ -12,4 +12,5 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 16
+      - run: npm install eslint-plugin-react eslint-plugin-react-native babel-eslint
       - run: eslint ../App.js
