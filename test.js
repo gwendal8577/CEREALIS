@@ -12,6 +12,6 @@ test('renders correctly',()=>{
     method: 'GET',
     headers: myHeader,
   }).then(Response => {
-    expect(Response.status).toBe(300);
+    expect(Response.status).toBe(200);
   })
 })
