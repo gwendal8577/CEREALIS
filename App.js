@@ -42,7 +42,7 @@ export default function App() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.textStyle}>
-          CÉRÉALIS
+          CEREALIS
         </Text>
       </View>
       {!image ? <Camera
