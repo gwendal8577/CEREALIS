@@ -71,7 +71,7 @@ function Footer() {
             />
             <Pressable style={[styles.buttonValidate]}
               onPress={()=> {registrateProspect(name,mail);setModalVisible(!modalVisible);}}>
-              <Text style={styles.textStyleV}>Valider</Text>
+              <Text style={styles.textStyleV}>Submit</Text>
             </Pressable>
             <TouchableOpacity style={[styles.buttonBack, styles.buttonGPlusStyle]} activeOpacity={0.5}>
               <Image source={{ uri: 'https://icon-library.com/images/social-network-icon/social-network-icon-23.jpg' }}
